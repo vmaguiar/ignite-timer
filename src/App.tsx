@@ -1,4 +1,5 @@
-import { Button } from "./components/Button";
+import { BrowserRouter } from "react-router-dom";
+import { Router } from "./Router";
 
 import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./styles/themes/default";
@@ -9,10 +10,10 @@ export function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyle />
-      <Button />
-      <Button />
-      <Button />
-      <Button />
+
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
     </ThemeProvider>
   )
 }
