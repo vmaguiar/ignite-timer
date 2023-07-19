@@ -19,6 +19,9 @@ export function Home() {
           <AmountOfMinutesInput
             id="AmountOfMinutes"
             type="number"
+            step={5}
+            min={5}
+            max={60}
             placeholder="00"
           />
 
