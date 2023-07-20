@@ -13,7 +13,13 @@ export function Home() {
             id="task"
             type="text"
             placeholder="Dê um nome para seu projeto"
+            list="task-suggestions"
           />
+          <datalist id="task-suggestions">
+            <option value="Projeto 1" />
+            <option value="Projeto 2" />
+            <option value="Banana" />
+          </datalist>
 
           <label htmlFor="">durante</label>
           <AmountOfMinutesInput

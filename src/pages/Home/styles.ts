@@ -62,6 +62,10 @@ border-color: ${props => props.theme["green-500"]};
 
 export const TaskInput = styled(BaseInput)`
 flex: 1;
+
+&::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
 `
 
 export const AmountOfMinutesInput = styled(BaseInput)`
