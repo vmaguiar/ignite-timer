@@ -24,7 +24,8 @@ interface Cycle {
   task: string,
   minutesAmount: number,
   startDate: Date,
-  interruptedDate?: Date
+  interruptedDate?: Date,
+  finishedDate?: Date
 }
 
 export function Home() {
@@ -43,19 +44,43 @@ export function Home() {
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
+  const activeCycleTotalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const activeCycleCurrentSeconds = activeCycle ? activeCycleTotalSeconds - amountSecondsPassed : 0
+
+
+
   useEffect(() => {
     let interval: number
 
     if (activeCycle) {
       interval = setInterval(() => {
-        setAmountSecondsPassed(differenceInSeconds(new Date(), activeCycle.startDate))
+        const secondsPassedCalculated = differenceInSeconds(new Date(), activeCycle.startDate)
+
+        if (secondsPassedCalculated >= activeCycleTotalSeconds) {
+          setCycles(oldCycles => (
+            oldCycles.map((cycle) => {
+              if (cycle.id === activeCycleId) {
+                return { ...cycle, finishedDate: new Date() }
+              }
+              else {
+                return cycle
+              }
+            })))
+
+          setAmountSecondsPassed(activeCycleTotalSeconds)
+          clearInterval(interval)
+          // setActiveCycleId(null)
+        }
+        else {
+          setAmountSecondsPassed(secondsPassedCalculated)
+        }
       }, 1000)
     }
 
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle])
+  }, [activeCycle, activeCycleTotalSeconds, activeCycleId])
 
 
   const handleCreateNewCycle = (data: NewCyleFormData) => {
@@ -76,8 +101,8 @@ export function Home() {
   }
 
   const handleInterruptCycle = () => {
-    setCycles(
-      cycles.map((cycle) => {
+    setCycles(oldCycles => (
+      oldCycles.map((cycle) => {
         if (cycle.id === activeCycleId) {
           return { ...cycle, interruptedDate: new Date() }
         }
@@ -85,13 +110,11 @@ export function Home() {
           return cycle
         }
       })
-    )
+    ))
     setActiveCycleId(null)
   }
 
 
-  const activeCycleTotalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
-  const activeCycleCurrentSeconds = activeCycle ? activeCycleTotalSeconds - amountSecondsPassed : 0
 
   const minutesToDisplay = Math.floor(activeCycleCurrentSeconds / 60)
   const secondsToDisplay = activeCycleCurrentSeconds % 60
@@ -106,6 +129,9 @@ export function Home() {
   useEffect(() => {
     if (activeCycle) {
       document.title = `${minutes}:${seconds}`
+    }
+    else {
+      document.title = 'Ignite Timer'
     }
   }, [activeCycle, minutes, seconds])
 
