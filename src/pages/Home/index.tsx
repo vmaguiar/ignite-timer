@@ -4,27 +4,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from 'zod'
 import { useState } from "react";
 
-import { FormContainer, HomeContainer, CountDownContainer, Separator, StartCountDownButton,
-  TaskInput, AmountOfMinutesInput } from "./styles";
+import {
+  FormContainer, HomeContainer, CountDownContainer, Separator, StartCountDownButton,
+  TaskInput, AmountOfMinutesInput
+} from "./styles";
 
 
 const newCycleFormValidationSchema = z.object({
-    task: z.string().min(1, 'Informe a tarefa'),
-    minutesAmount: z.number().min(5, 'O ciclo deve ser no minimo 5 min')
+  task: z.string().min(1, 'Informe a tarefa'),
+  minutesAmount: z.number().min(5, 'O ciclo deve ser no minimo 5 min')
     .max(60, 'O cilo precisa ser no máximo 60 min'),
-  })
+})
 
-  type NewCyleFormData = z.infer<typeof newCycleFormValidationSchema>
+type NewCyleFormData = z.infer<typeof newCycleFormValidationSchema>
 
-  interface Cycle {
-    id: string,
-    task: string,
-    minutesAmount: number
-  }
+interface Cycle {
+  id: string,
+  task: string,
+  minutesAmount: number
+}
 
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
   const { register, handleSubmit, watch, reset } = useForm<NewCyleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
@@ -35,7 +38,7 @@ export function Home() {
   })
 
 
-  const handleCreateNewCycle = (data:NewCyleFormData) => {
+  const handleCreateNewCycle = (data: NewCyleFormData) => {
     const id = String(new Date().getTime())
     const newCyle: Cycle = {
       id,
@@ -51,6 +54,15 @@ export function Home() {
 
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  const activeCycleTotalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const activeCycleCurrentSeconds = activeCycle ? activeCycleTotalSeconds - amountSecondsPassed : 0
+
+  const minutesToDisplay = Math.floor(activeCycleCurrentSeconds / 60)
+  const secondsToDisplay = activeCycleCurrentSeconds % 60
+
+  const minutes = String(minutesToDisplay).padStart(2, '0')
+  const seconds = String(secondsToDisplay).padStart(2, '0')
 
   const task = watch('task')
   const isSubmitButtonDisable = !task
@@ -82,18 +94,18 @@ export function Home() {
             min={5}
             max={60}
             placeholder="00"
-            {...register('minutesAmount', {valueAsNumber: true})}
+            {...register('minutesAmount', { valueAsNumber: true })}
           />
 
           <span>minutos.</span>
         </FormContainer>
 
         <CountDownContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
           <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
+          <span>{seconds[0]}</span>
+          <span>{seconds[1]}</span>
         </CountDownContainer>
 
         <StartCountDownButton disabled={isSubmitButtonDisable} type="submit">
