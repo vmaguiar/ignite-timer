@@ -1,4 +1,4 @@
-import { Play } from "phosphor-react";
+import { HandPalm, Play } from "phosphor-react";
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from 'zod'
@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import {
   FormContainer, HomeContainer, CountDownContainer, Separator, StartCountDownButton,
-  TaskInput, AmountOfMinutesInput
+  TaskInput, AmountOfMinutesInput, StopCountDownButton
 } from "./styles";
 
 
@@ -105,6 +105,7 @@ export function Home() {
             type="text"
             list="task-suggestions"
             placeholder="Dê um nome para seu projeto"
+            disabled={!!activeCycle}
             {...register('task')}
           />
           <datalist id="task-suggestions">
@@ -117,10 +118,10 @@ export function Home() {
           <AmountOfMinutesInput
             id="AmountOfMinutes"
             type="number"
-
-
+            min={1}
             max={60}
             placeholder="00"
+            disabled={!!activeCycle}
             {...register('minutesAmount', { valueAsNumber: true })}
           />
 
@@ -135,10 +136,17 @@ export function Home() {
           <span>{seconds[1]}</span>
         </CountDownContainer>
 
-        <StartCountDownButton disabled={isSubmitButtonDisable} type="submit">
-          <Play size={24} />
-          Começar
-        </StartCountDownButton>
+        {activeCycle ? (
+          <StopCountDownButton type="button">
+            <HandPalm size={24} />
+            Interromper
+          </StopCountDownButton>
+        ) : (
+          <StartCountDownButton disabled={isSubmitButtonDisable} type="submit">
+            <Play size={24} />
+            Começar
+          </StartCountDownButton>
+        )}
       </form>
     </HomeContainer>
   )
