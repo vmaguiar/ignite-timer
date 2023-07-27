@@ -23,7 +23,8 @@ interface Cycle {
   id: string,
   task: string,
   minutesAmount: number,
-  startDate: Date
+  startDate: Date,
+  interruptedDate?: Date
 }
 
 export function Home() {
@@ -74,6 +75,20 @@ export function Home() {
     reset()
   }
 
+  const handleInterruptCycle = () => {
+    setCycles(
+      cycles.map((cycle) => {
+        if (cycle.id === activeCycleId) {
+          return { ...cycle, interruptedDate: new Date() }
+        }
+        else {
+          return cycle
+        }
+      })
+    )
+    setActiveCycleId(null)
+  }
+
 
   const activeCycleTotalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   const activeCycleCurrentSeconds = activeCycle ? activeCycleTotalSeconds - amountSecondsPassed : 0
@@ -97,7 +112,12 @@ export function Home() {
 
   return (
     <HomeContainer>
-      <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          void handleSubmit(handleCreateNewCycle)(event)
+        }}
+      >
         <FormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
           <TaskInput
@@ -137,7 +157,7 @@ export function Home() {
         </CountDownContainer>
 
         {activeCycle ? (
-          <StopCountDownButton type="button">
+          <StopCountDownButton onClick={handleInterruptCycle} type="button">
             <HandPalm size={24} />
             Interromper
           </StopCountDownButton>
