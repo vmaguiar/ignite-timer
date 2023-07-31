@@ -32,7 +32,12 @@ export function Home() {
       minutesAmount: 0
     }
   })
-  const { handleSubmit, watch, /*reset*/ } = newCycleForm
+  const { handleSubmit, watch, reset } = newCycleForm
+
+  const handleCreateNewCycle = (data: NewCyleFormData) => {
+    createNewCycle(data)
+    reset()
+  }
 
 
   const task = watch('task')
@@ -44,7 +49,7 @@ export function Home() {
       <form
         onSubmit={(event) => {
           event.preventDefault()
-          void handleSubmit(createNewCycle)(event)
+          void handleSubmit(handleCreateNewCycle)(event)
         }}
       >
         <FormProvider {...newCycleForm}>
