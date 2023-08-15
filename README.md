@@ -140,11 +140,9 @@ npm run dev
   <img align="center" alt="HTML" height="40" width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" />
   <img align="center" alt="CSS" height="40" width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"/>
   <img align="center" alt="React " height="40" width="45" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" />
-  <img align="center" alt="Next.js" height="45" width="45" src="https://cdn.worldvectorlogo.com/logos/nextjs-13.svg" />
+  <img align="center" alt="Vite" height="45" width="45" src="https://cdn.worldvectorlogo.com/logos/vitejs.svg" />
   <img align="center" alt="TypeScript" height="40" width="40" src="https://cdn.worldvectorlogo.com/logos/typescript.svg" />
-  <img align="center" alt="tRPC " height="40" width="45" src="https://trpc.io/img/logo.svg" />
-  <img align="center" alt="Prisma " height="40" width="45" src="https://cdn.worldvectorlogo.com/logos/prisma-2.svg" />
-  <img align="center" alt="Tailwindcss " height="40" width="45" src="https://cdn.worldvectorlogo.com/logos/tailwind-css-1.svg" />
-            
+  <img align="center" alt="TypeScript" height="40" width="40" src="https://cdn.worldvectorlogo.com/logos/styled-components-1.svg" />
+
 </div>
 
