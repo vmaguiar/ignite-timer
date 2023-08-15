@@ -11,7 +11,7 @@ export interface Cycle {
   finishedDate?: Date
 }
 
-interface CycleState {
+export interface CycleState {
   cycles: Cycle[],
   activeCycleId: string | null,
 }
